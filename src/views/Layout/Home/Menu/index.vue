@@ -2,30 +2,39 @@
   <Menu
     active-name="1-2"
     theme="light"
-    width="auto"
+    :width="collapsed ? '64px' : '200px'"
     :open-names="['1']"
-    :style="{height: '100%'}"
+    :style="{height: '100%', transition: collapsed ? '' : '.2s'}"
     @on-select="selectMenu"
   >
-    <!-- 非折叠菜单，递归 menuItem -->
-    <template v-if="!collapsed">
-      <recursionMenuItem v-for="(menu, index) in menuList" :key="index" :menu="menu"></recursionMenuItem>
-    </template>
 
-    <!-- 折叠菜单，递归 dropdown -->
-    <div class="collapsedMenu" v-else>
-      <template v-for="(menu, index) in menuList">
-        <Tooltip
-         :key="index"
-          v-if="!menu.children || !menu.children.length"
-          :content="menu.name"
-          placement="right"
-        >
-          <Icon v-if="menu.icon" :type="menu.icon" size="30" @click="selectMenu(menu.to)" :style="{margin: '10px', cursor: 'pointer'}"/>
-        </Tooltip>
-
-        <collapsedMenuItem v-else :key="index" :menu="menu" @on-select="selectMenu" noName></collapsedMenuItem>
+    <div :style="{
+      width: collapsed ? '64px' : '200px',
+      minWidth: collapsed ? '64px' : '200px',
+      overflowX: 'hidden',
+      height: '100%'
+    }"
+    >
+      <!-- 非折叠菜单，递归 menuItem -->
+      <template v-if="!collapsed">
+        <recursionMenuItem v-for="(menu, index) in menuList" :key="index" :menu="menu"></recursionMenuItem>
       </template>
+
+      <!-- 折叠菜单，递归 dropdown -->
+      <div class="collapsedMenu" v-else>
+        <template v-for="(menu, index) in menuList">
+          <Tooltip
+          :key="index"
+            v-if="!menu.children || !menu.children.length"
+            :content="menu.name"
+            placement="right"
+          >
+            <Icon v-if="menu.icon" :type="menu.icon" size="30" @click="selectMenu(menu.to)" :style="{padding: '10px', cursor: 'pointer'}"/>
+          </Tooltip>
+
+          <collapsedMenuItem v-else :key="index" :menu="menu" @on-select="selectMenu" noName></collapsedMenuItem>
+        </template>
+      </div>
     </div>
   </Menu>
 </template>
@@ -66,6 +75,7 @@ export default {
 
 <style lang="less" scoped>
 .collapsedMenu {
+  width: auto;
 
   > .ivu-tooltip, > .ivu-dropdown {
     width: 64px;

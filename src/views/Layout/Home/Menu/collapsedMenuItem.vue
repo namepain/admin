@@ -10,7 +10,7 @@
 
       <!-- 第一层不需要显示中文，fontSize 变大 -->
       <template v-if="noName">
-        <Icon :type="menu.icon" size="30" :style="{margin: '10px', cursor: 'pointer'}"/>
+        <Icon :type="menu.icon" size="30" :style="{padding: '10px', cursor: 'pointer'}"/>
       </template>
 
       <template v-else>

@@ -68,6 +68,9 @@ export default {
   .ivu-layout-header {
     background: #23262E
   }
+  .ivu-menu-vertical.ivu-menu-light:after {
+    width: 0;
+  }
 
   /deep/ .ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu) {
     color: #eb7252;
