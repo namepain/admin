@@ -1,15 +1,54 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
+import Login from '@/views/Layout/Login'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
+      path: '/login',
+      name: 'Login',
+      component: Login
+    },
+    {
       path: '/',
-      name: 'home',
-      component: Home
+      name: 'Home',
+      redirect: '/dashboard',
+      component: () => import('@/views/Layout/Home'),
+      children: [
+        {
+          path: '/dashboard',
+          name: 'Dashboard',
+          component: () => import('@/views/Dashboard')
+        },
+        {
+          path: '/memberList',
+          name: 'MemberList',
+          component: () => import('@/views/MemberList')
+        },
+        {
+          path: '/shareSignInList',
+          name: 'ShareSignInList',
+          component: () => import('@/views/ShareSignInList')
+        },
+
+        {
+          path: '/nest1',
+          name: 'nest1',
+          component: () => import('@/views/nest/nest1')
+        },
+        {
+          path: '/nest2',
+          name: 'nest2',
+          component: () => import('@/views/nest/nest2')
+        },
+        {
+          path: '/nest3',
+          name: 'nest3',
+          component: () => import('@/views/nest/nest3')
+        }
+      ]
     },
     {
       path: '/about',
