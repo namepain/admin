@@ -11,15 +11,14 @@
         top: '64px',
         bottom: 0,
         background: '#fff',
-        boxShadow: '0 2px 10px 0 rgba(7,17,27,.1)'
+        boxShadow: '0 2px 10px 0 rgba(7,17,27,.1)',
+        zIndex: 9
       }">
         <XMenu :menuList="menuList" @selectMenu="selectMenu"/>
       </Sider>
       <Layout :style="{marginLeft: collapsed ? '64px' : '200px', padding: '0 24px', transition: '.2s'}">
           <Breadcrumb :style="{margin: '24px 0'}">
-              <BreadcrumbItem>Home</BreadcrumbItem>
-              <BreadcrumbItem>Components</BreadcrumbItem>
-              <BreadcrumbItem>Layout</BreadcrumbItem>
+            <BreadcrumbItem v-for="(bread, index) in breadList" :key="index" :to="{name: bread}">{{ bread }}</BreadcrumbItem>
           </Breadcrumb>
           <Content :style="{background: '#fff'}">
             <router-view />
@@ -47,7 +46,10 @@ export default {
   computed: {
     ...mapGetters([
       'collapsed'
-    ])
+    ]),
+    breadList () {
+      return this.$route.matched.map(v => v.name)
+    }
   },
 
   methods: {
@@ -85,5 +87,6 @@ export default {
   /deep/ .ivu-menu-vertical .ivu-menu-submenu-title:hover {
     color: #eb7252
   }
+
 }
 </style>

@@ -1,7 +1,7 @@
 /**
  * 格式化时间
- * @param {*} date
- * @param {*} fmt
+ * @param {Date} date
+ * @param {String} fmt
  */
 export function formatDate (date, fmt = 'yyyy-MM-dd hh:mm:ss') {
   if (!date || String(date) === 'Invalid Date') return ''
@@ -26,4 +26,12 @@ export function formatDate (date, fmt = 'yyyy-MM-dd hh:mm:ss') {
     }
   }
   return fmt
+}
+
+/**
+ * 扁平化数组
+ * @param {Array} arr
+ */
+export function flatten (arr) {
+  return arr.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), [])
 }

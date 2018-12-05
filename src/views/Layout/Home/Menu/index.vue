@@ -1,9 +1,10 @@
 <template>
   <Menu
-    active-name="1-2"
+    ref="menu"
+    :active-name="activeMenuName"
+    :open-names="openNames"
     theme="light"
     :width="collapsed ? '64px' : '200px'"
-    :open-names="['1']"
     :style="{height: '100%', transition: collapsed ? '' : '.2s'}"
     @on-select="selectMenu"
   >
@@ -53,16 +54,51 @@ export default {
     }
   },
 
+  data () {
+    return {
+      activeMenuName: null,
+      openNames: [],
+      flatMenu: this.flattenMenu(this.menuList).map(v => v.to)
+    }
+  },
+
   computed: {
     ...mapGetters([
       'collapsed'
     ])
   },
 
+  watch: {
+    '$route': {
+      immediate: true,
+      handler (v) {
+        if (!this.collapsed) {
+          if (this.flatMenu.indexOf(v.name) > -1) {
+            this.activeMenuName = v.name
+          }
+          this.openNames = v.matched.map(v => v.name)
+          this.$nextTick(() => this.$refs['menu'].updateOpened())
+        }
+      }
+    }
+  },
+
   methods: {
+
+    // 选择菜单
     selectMenu (name) {
       console.log(name)
       this.$emit('selectMenu', name)
+    },
+
+    // 扁平菜单数组
+    flattenMenu (list) {
+      if (!list || !Array.isArray(list)) {
+        return []
+      }
+      return list.reduce((a, b) => {
+        return a.concat(b.children && b.children.length ? [b].concat(this.flattenMenu(b.children)) : b)
+      }, [])
     }
   },
 

@@ -1,6 +1,7 @@
 <template>
-  <Dropdown placement="right" trigger="click">
-    <div @click="handleClick(menu.to)" :style="{
+  <Dropdown placement="right" >
+    <div
+      :style="{
         cursor: 'pointer',
         fontSize: '12px',
         textAlign: noName ? 'center' : 'left',

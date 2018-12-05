@@ -1,3 +1,6 @@
 <template>
-  <div>nest2</div>
+  <div>
+    nest2
+    <router-view></router-view>
+  </div>
 </template>

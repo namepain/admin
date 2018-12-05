@@ -8,7 +8,7 @@
           <Input type="text" placeholder="用户名" v-model.trim="formItem.username"></Input>
         </FormItem>
         <FormItem class="login-form-item" prop="password">
-          <Input type="password" placeholder="用户名" v-model="formItem.password"></Input>
+          <Input type="password" placeholder="用户名" v-model="formItem.password" @keyup.enter.native="login"></Input>
         </FormItem>
         <FormItem class="login-form-item">
           <Button @click="login" long type="primary">登 入</Button>

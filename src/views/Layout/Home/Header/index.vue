@@ -6,7 +6,7 @@
       <Icon type="md-menu" color="#fff" size="30" @click="collapseMenu" :style="{transition: '.2s', cursor: 'pointer', transform: collapsed ? 'rotate(90deg)' : ''}"/>
       <Dropdown @on-click="handleClick">
           <a href="javascript:void(0)">
-            <Avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg" />
+            <Avatar src="http://img.sxwhome.com/FkVtn0xGn_Gxz8nC142mzb3Pb01b" />
             <Icon type="md-arrow-dropdown" color="#fff"/>
           </a>
           <DropdownMenu slot="list">
@@ -40,7 +40,7 @@ export default {
 
     handleClick (name) {
       if (name === 'logout') {
-        this.$store.dispatch('Logout').then(res => {
+        this.$store.dispatch('frontLogout').then(res => {
           this.$router.push({ name: 'Login' })
         })
       }
