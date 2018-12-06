@@ -7,6 +7,7 @@
       <Sider :style="{
         width: collapsed ? '64px' : '200px',
         minWidth: collapsed ? '64px' : '200px',
+        overflowX: collapsed ? '' : 'hidden',
         position: 'fixed',
         top: '64px',
         bottom: 0,
