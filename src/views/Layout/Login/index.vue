@@ -1,14 +1,14 @@
 <template>
   <div class="login">
     <div class="login-wrapper">
-      <div class="login-header">admin</div>
-      <div class="subtitle">一个admin的subtitle</div>
+      <div class="login-header">遇 音</div>
+      <!-- <div class="subtitle">一个admin的subtitle</div> -->
       <Form ref="loginForm" :model="formItem" :rules="rules" class="login-form">
         <FormItem class="login-form-item" prop="username">
           <Input type="text" placeholder="用户名" v-model.trim="formItem.username"></Input>
         </FormItem>
         <FormItem class="login-form-item" prop="password">
-          <Input type="password" placeholder="用户名" v-model="formItem.password" @keyup.enter.native="login"></Input>
+          <Input type="password" placeholder="密 码" v-model="formItem.password" @keyup.enter.native="login"></Input>
         </FormItem>
         <FormItem class="login-form-item">
           <Button @click="login" long type="primary">登 入</Button>
@@ -66,6 +66,7 @@ export default {
     margin: 0 auto;
 
     .login-header {
+      margin-bottom: 20px;
       font-weight: 300;
       font-size: 30px;
       color: #000;

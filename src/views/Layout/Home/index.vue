@@ -24,7 +24,7 @@
           <Content :style="{position: 'relative', background: '#fff'}">
             <router-view />
           </Content>
-          <Footer style="text-align: center; background: transparent;">2018-2018 &copy; 遇音科技</Footer>
+          <Footer style="text-align: center; background: transparent;">2013-2018 &copy; 遇音科技</Footer>
       </Layout>
     </Layout>
   </Layout>
