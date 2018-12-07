@@ -17,7 +17,7 @@
 
 <script>
 import { selectWxstatisticalOrders } from '@/api/user'
-import { formatDate } from '@/common/util'
+// import { formatDate } from '@/common/util'
 
 /**
  "id": 165,
@@ -39,9 +39,15 @@ import { formatDate } from '@/common/util'
   "sex": "男",
   "totalmoney": 123310,
   "bishu": 38
+
+  bishu: 21
+nickname: "腐烂"
+phone: "15854110915"
+sex: "男"
+totalmoney: 37000
  */
 export default {
-  name: 'MemberList',
+  name: 'WxstatisticalOrders',
   data () {
     return {
       loading: false,
@@ -52,26 +58,28 @@ export default {
       },
 
       columns: [
-        { title: 'ID', key: 'id' },
+        { title: '序号', type: 'index' },
         { title: '笔数', key: 'bishu' },
-        { title: '总金额', key: 'totalmoney' },
-        { title: '充值金币数量', key: 'coin' },
-        { title: '商品描述', key: 'body' },
-        { title: '交易类型', key: 'trade_type' },
-        { title: '随机字符串', key: 'nonce_str' },
-        { title: '系统订单号', key: 'out_trade_no' },
-        { title: '应付金额(即金币价值)单位为分', key: 'total_fee' },
-        { title: '优惠金额', key: 'discounts_fee' },
-        { title: '实付金额', key: 'real_fee' },
-        { title: '下单人手机号', key: 'mobile' },
-        { title: '微信支付订单号', key: 'transaction_id' },
-        { title: '下单时间', key: 'createTime', render: (h, { row: { createTime } }) => h('span', formatDate(createTime * 1000)) },
-        /* eslint-disable-next-line */
-        { title: '支付完成时间', key: 'time_end', render: (h, { row: { time_end } }) => h('span', formatDate(time_end * 1000)) },
-        { title: '平台', key: 'platform', render: (h, { row: { platform } }) => h('span', platform === 0 ? 'ios' : 'Android') },
-        { title: '充值类型', key: 'type', render: (h, { row: { type } }) => h('span', type === 0 ? '金币充值' : 'vip充值') },
         { title: '昵称', key: 'nickname' },
-        { title: '性别', key: 'sex' }
+        { title: '手机号', key: 'phone' },
+        { title: '性别', key: 'sex' },
+        { title: '总金额', key: 'totalmoney', render: (h, params) => h('span', params.row.totalmoney / 100) }
+
+        // { title: '充值金币数量', key: 'coin' },
+        // { title: '商品描述', key: 'body' },
+        // { title: '交易类型', key: 'trade_type' },
+        // { title: '随机字符串', key: 'nonce_str' },
+        // { title: '系统订单号', key: 'out_trade_no' },
+        // { title: '应付金额(即金币价值)单位为分', key: 'total_fee' },
+        // { title: '优惠金额', key: 'discounts_fee' },
+        // { title: '实付金额', key: 'real_fee', render: (h, params) => h('span', params.row.real_fee / 100) },
+        // { title: '下单人手机号', key: 'mobile' },
+        // { title: '微信支付订单号', key: 'transaction_id' },
+        // { title: '下单时间', key: 'createTime', render: (h, { row: { createTime } }) => h('span', formatDate(createTime * 1000)) },
+        // /* eslint-disable-next-line */
+        // { title: '支付完成时间', key: 'time_end', render: (h, { row: { time_end } }) => h('span', formatDate(time_end * 1000)) },
+        // { title: '平台', key: 'platform', render: (h, { row: { platform } }) => h('span', platform === 0 ? 'ios' : 'Android') },
+        // { title: '充值类型', key: 'type', render: (h, { row: { type } }) => h('span', type === 0 ? '金币充值' : 'vip充值') },
       ],
       data: []
     }

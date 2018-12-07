@@ -30,10 +30,30 @@ const router = new Router({
           name: 'Dashboard',
           component: () => import('@/views/Dashboard')
         },
+
+        // 用户
         {
-          path: '/memberList',
-          name: 'MemberList',
-          component: () => import('@/views/MemberList')
+          path: '/member',
+          name: 'Member',
+          redirect: '/memberList',
+          component: emptyView,
+          children: [
+            {
+              path: '/memberList',
+              name: 'MemberList',
+              component: () => import('@/views/MemberList')
+            },
+            {
+              path: '/memberProportion',
+              name: 'MemberProportion',
+              component: () => import('@/views/MemberList/MemberProportion')
+            },
+            {
+              path: '/memberLabel',
+              name: 'MemberLabel',
+              component: () => import('@/views/MemberList/MemberLabel')
+            }
+          ]
         },
 
         // 支付宝
@@ -76,32 +96,132 @@ const router = new Router({
           ]
         },
 
+        // 通话记录
         {
-          path: '/shareSignInList',
-          name: 'ShareSignInList',
-          component: () => import('@/views/ShareSignInList'),
+          path: '/callRecord',
+          name: 'CallRecord',
+          redirect: '/callRecordList',
+          component: emptyView,
           children: [
             {
-              path: '/nest1',
-              name: 'nest1',
-              component: () => import('@/views/nest/nest1'),
-              children: [
-                {
-                  path: '/nest2',
-                  name: 'nest2',
-                  component: () => import('@/views/nest/nest2'),
-                  children: [
-                    {
-                      path: '/nest3',
-                      name: 'nest3',
-                      component: () => import('@/views/nest/nest3')
-                    }
-                  ]
-                }
-              ]
+              path: '/callRecordList',
+              name: 'CallRecordList',
+              component: () => import('@/views/CallRecord/index')
+            },
+            {
+              path: '/callRecordStatis',
+              name: 'CallRecordStatis',
+              component: () => import('@/views/CallRecord/CallRecordStatis')
+            }
+          ]
+        },
+
+        // 分享注册
+        {
+          path: '/shareRegister',
+          name: 'ShareRegister',
+          redirect: '/shareRegisterList',
+          component: emptyView,
+          children: [
+            {
+              path: '/shareRegisterList',
+              name: 'ShareRegisterList',
+              component: () => import('@/views/ShareRegister/index')
+            },
+            {
+              path: '/shareRegisterStatis',
+              name: 'ShareRegisterStatis',
+              component: () => import('@/views/ShareRegister/ShareRegisterStatis')
+            }
+          ]
+        },
+
+        // 礼物记录
+        {
+          path: '/gifts',
+          name: 'Gifts',
+          redirect: '/giftsList',
+          component: emptyView,
+          children: [
+            {
+              path: '/giftsList',
+              name: 'GiftsList',
+              component: () => import('@/views/Gifts/index')
+            },
+            {
+              path: '/giftsStatis',
+              name: 'GiftsStatis',
+              component: () => import('@/views/Gifts/GiftsStatis')
+            }
+          ]
+        },
+
+        // 提现
+        {
+          path: '/withdraw',
+          name: 'Withdraw',
+          redirect: '/withdrawList',
+          component: emptyView,
+          children: [
+            {
+              path: '/withdrawList',
+              name: 'WithdrawList',
+              component: () => import('@/views/Withdraw/index')
+            },
+            {
+              path: '/withdrawRemain',
+              name: 'WithdrawRemain',
+              component: () => import('@/views/Withdraw/WithdrawRemain')
+            }
+          ]
+        },
+
+        // 动态
+        {
+          path: '/dynamics',
+          name: 'Dynamics',
+          redirect: '/dynamicsList',
+          component: emptyView,
+          children: [
+            {
+              path: '/dynamicsList',
+              name: 'DynamicsList',
+              component: () => import('@/views/Dynamics/index')
+            },
+            {
+              path: '/dynamicsStatis',
+              name: 'DynamicsStatis',
+              component: () => import('@/views/Dynamics/DynamicsStatis')
             }
           ]
         }
+
+        // {
+        //   path: '/shareSignInList',
+        //   name: 'ShareSignInList',
+        //   component: () => import('@/views/ShareSignInList'),
+        //   children: [
+        //     {
+        //       path: '/nest1',
+        //       name: 'nest1',
+        //       component: () => import('@/views/nest/nest1'),
+        //       children: [
+        //         {
+        //           path: '/nest2',
+        //           name: 'nest2',
+        //           component: () => import('@/views/nest/nest2'),
+        //           children: [
+        //             {
+        //               path: '/nest3',
+        //               name: 'nest3',
+        //               component: () => import('@/views/nest/nest3')
+        //             }
+        //           ]
+        //         }
+        //       ]
+        //     }
+        //   ]
+        // }
       ]
     },
     {

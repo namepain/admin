@@ -39,7 +39,7 @@ import { formatDate } from '@/common/util'
   "sex": "男"
  */
 export default {
-  name: 'MemberList',
+  name: 'WxOrderList',
   data () {
     return {
       loading: false,
@@ -58,12 +58,12 @@ export default {
         { title: '系统订单号', key: 'out_trade_no' },
         { title: '应付金额(即金币价值)单位为分', key: 'total_fee' },
         { title: '优惠金额', key: 'discounts_fee' },
-        { title: '实付金额', key: 'real_fee' },
+        { title: '实付金额', key: 'real_fee', render: (h, params) => h('span', params.row.real_fee / 100) },
         { title: '下单人手机号', key: 'mobile' },
         { title: '微信支付订单号', key: 'transaction_id' },
         { title: '下单时间', key: 'createTime', render: (h, { row: { createTime } }) => h('span', formatDate(createTime * 1000)) },
         /* eslint-disable-next-line */
-        { title: '支付完成时间', key: 'time_end', render: (h, { row: { time_end } }) => h('span', formatDate(time_end * 1000)) },
+        { title: '支付完成时间', key: 'time_end' },
         { title: '平台', key: 'platform', render: (h, { row: { platform } }) => h('span', platform === 0 ? 'ios' : 'Android') },
         { title: '充值类型', key: 'type', render: (h, { row: { type } }) => h('span', type === 0 ? '金币充值' : 'vip充值') },
         { title: '昵称', key: 'nickname' },

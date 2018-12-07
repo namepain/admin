@@ -1,10 +1,10 @@
 <template>
   <Card class="memberList " :bordered="false" dis-hover>
-    <p slot="title">会员列表</p>
+    <p slot="title">用户列表</p>
 
     <Row type="flex" justify="end" align="middle" class="mb10">
-      <Input v-model="searchParam.nickname" placeholder="nickname" clearable class="w220 mr10"></Input>
-      <Input v-model="searchParam.phone" placeholder="phone" clearable class="w220 mr10"></Input>
+      <Input v-model.trim="searchParam.nickname" placeholder="nickname" clearable class="w220 mr10"></Input>
+      <Input v-model.trim="searchParam.phone" placeholder="phone" clearable class="w220 mr10"></Input>
 
       <Button type="primary" icon="ios-search" :loading="loading" @click="getList(1)">查询</Button>
     </Row>
@@ -15,11 +15,19 @@
             @on-change="getList"
       > </Page>
     </Row>
+
+    <Modal v-model="modal" title="赠送的金币数量">
+      <Input v-model.trim="coin" placeholder="唤醒赠送的金币数量"></Input>
+      <div slot="footer">
+        <Button @click="modal = false">取消</Button>
+        <Button type="primary" @click="wakeUp">确定</Button>
+      </div>
+    </Modal>
   </Card>
 </template>
 
 <script>
-import { selectuserbychoose } from '@/api/user'
+import { selectuserbychoose, noticeUserUploadVoice, wakeUpBymobile } from '@/api/user'
 
 /**
  * `id` int(100) NOT NULL AUTO_INCREMENT,
@@ -45,7 +53,10 @@ export default {
   name: 'MemberList',
   data () {
     return {
+      modal: false,
       loading: false,
+      phone: '',
+      coin: 0,
       searchParam: {
         nickname: '',
         phone: '',
@@ -55,24 +66,44 @@ export default {
       },
 
       columns: [
-        { title: 'ID', key: 'id' },
-        { title: '手机号', key: 'phone' },
-        { title: '密码', key: 'password' },
-        { title: '是否签约', key: 'is_signing' },
-        { title: '用户昵称', key: 'nickname' },
-        { title: '用户拥有的总金币数量', key: 'coin' },
-        { title: '状态', key: 'state', render: (h, { row: { state } }) => h('span', state === 0 ? '有空' : state === 1 ? '忙碌' : state === 2 ? '勿扰' : '未知') },
-        { title: '性别', key: 'sex' },
-        { title: '魅力值', key: 'charm_value' },
-        { title: '豪气值', key: 'heroism_value' },
-        { title: '当前收费标准 通话时长/分钟', key: 'call_duration' },
-        { title: '主头像地址', key: 'photo_address' },
-        { title: '个人介绍', key: 'personal_introduction' },
-        { title: '签名', key: 'signature' },
-        { title: '年龄', key: 'age' },
-        { title: '用户id', key: 'userid' },
-        { title: 'answer', key: 'answer' },
-        { title: '平台', key: 'platform', render: (h, { row: { platform } }) => h('span', platform === 0 ? 'ios' : 'Android') }
+        { title: 'ID', minWidth: 50, key: 'id' },
+        { title: '手机号', minWidth: 120, key: 'phone' },
+        { title: '密码', minWidth: 100, key: 'password' }, /* eslint-disable-next-line */
+        { title: '是否签约', minWidth: 80, key: 'is_signing', render: (h, { row: { is_signing } }) => h('span', is_signing === 0 ? '未签约' : '已签约') },
+        { title: '用户昵称', minWidth: 100, key: 'nickname' },
+        { title: '用户拥有的总金币数量', minWidth: 100, key: 'coin' },
+        { title: '状态', minWidth: 80, key: 'state', render: (h, { row: { state } }) => h('span', state === 0 ? '有空' : state === 1 ? '忙碌' : state === 2 ? '勿扰' : '未知') },
+        { title: '性别', minWidth: 80, key: 'sex' },
+        { title: '魅力值', minWidth: 80, key: 'charm_value' },
+        { title: '豪气值', minWidth: 80, key: 'heroism_value' },
+        { title: '当前收费标准 通话时长/分钟', minWidth: 100, key: 'call_duration' },
+        { title: '主头像地址', minWidth: 100, key: 'photo_address' },
+        { title: '个人介绍', minWidth: 100, key: 'personal_introduction' },
+        { title: '签名', minWidth: 100, key: 'signature' },
+        { title: '年龄', minWidth: 80, key: 'age' },
+        { title: '用户id', minWidth: 80, key: 'userid' },
+        { title: '登录状态', minWidth: 80, key: 'answer', render: (h, { row: { answer } }) => h('span', answer === 0 ? '登录' : '登出') },
+        { title: '平台', minWidth: 80, key: 'platform', render: (h, { row: { platform } }) => h('span', platform === 0 ? 'ios' : 'Android') },
+        {
+          title: '操作',
+          key: 'action',
+          width: 180,
+          fixed: 'right',
+          render: (h, { row: { phone, platform, sex, coin } }) => {
+            return h('div', [
+              h('Button', { props: { type: 'info', size: 'small' }, style: { marginRight: '5px' }, on: { click: () => this.notice(phone, platform, sex) } }, '通知上传语音'),
+              h('Button', {
+                props: { type: 'success', size: 'small' },
+                on: {
+                  click: () => {
+                    this.phone = phone
+                    this.modal = true
+                  }
+                }
+              }, '唤醒')
+            ])
+          }
+        }
       ],
       data: []
     }
@@ -95,6 +126,29 @@ export default {
         this.loading = false
       }).catch(e => {
         this.loading = false
+      })
+    },
+
+    // 通知用户上传遇音
+    notice (phone, platform, sex) {
+      // ...
+      noticeUserUploadVoice(phone, platform, sex).then(data => {
+        this.$Notice.success({
+          title: '成功',
+          desc: '通知用户上传语音成功'
+        })
+      })
+    },
+
+    // 唤醒用户
+    wakeUp () {
+      // ...
+      wakeUpBymobile(this.phone, this.coin).then(data => {
+        this.modal = false
+        this.$Notice.success({
+          title: '成功',
+          desc: '唤醒用户成功'
+        })
       })
     }
   }

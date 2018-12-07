@@ -10,11 +10,7 @@
             <Icon type="md-arrow-dropdown" color="#fff"/>
           </a>
           <DropdownMenu slot="list">
-              <DropdownItem name="驴打滚">驴打滚</DropdownItem>
-              <DropdownItem name="炸酱面">炸酱面</DropdownItem>
-              <DropdownItem name="豆汁儿" disabled>豆汁儿</DropdownItem>
-              <DropdownItem name="冰糖葫芦">冰糖葫芦</DropdownItem>
-              <DropdownItem name="logout" divided>退出登录</DropdownItem>
+              <DropdownItem name="logout" >退出登录</DropdownItem>
           </DropdownMenu>
       </Dropdown>
     </div>

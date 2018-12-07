@@ -21,7 +21,7 @@
           <Breadcrumb :style="{margin: '24px 0'}">
             <BreadcrumbItem v-for="(bread, index) in breadList" :key="index" :to="{name: bread}">{{ bread }}</BreadcrumbItem>
           </Breadcrumb>
-          <Content :style="{background: '#fff'}">
+          <Content :style="{position: 'relative', background: '#fff'}">
             <router-view />
           </Content>
           <Footer style="text-align: center; background: transparent;">2018-2018 &copy; 遇音科技</Footer>
