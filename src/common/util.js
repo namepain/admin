@@ -35,3 +35,23 @@ export function formatDate (date, fmt = 'yyyy-MM-dd hh:mm:ss') {
 export function flatten (arr) {
   return arr.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), [])
 }
+
+export function parseSeconds (seconds) {
+  let parser = [
+    { desc: '天', unit: 24 * 60 * 60 },
+    { desc: '小时', unit: 60 * 60 },
+    { desc: '分', unit: 60 },
+    { desc: '秒', unit: 1 }
+  ]
+  if (+seconds === 0) {
+    return '0秒'
+  }
+  return parser.reduce((a, b) => {
+    let num = ~~(seconds / b.unit)
+    seconds %= b.unit
+    if (num) {
+      a += num + b.desc
+    }
+    return a
+  }, '')
+}
