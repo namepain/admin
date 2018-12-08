@@ -5,12 +5,12 @@ import request from '@/common/request'
  * @param {String} username
  * @param {String} password
  */
-export function Login (mobile, password) {
+export function Login (username, password) {
   return request({
-    url: '/user/adminlogin',
-    method: 'get',
+    url: '/login/login',
+    method: 'post',
     params: {
-      mobile,
+      username,
       password
     }
   })
@@ -21,7 +21,7 @@ export function Login (mobile, password) {
  */
 export function Logout () {
   return request({
-    url: '/logout',
+    url: '/login/logout',
     method: 'post'
   })
 }

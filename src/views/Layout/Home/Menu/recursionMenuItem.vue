@@ -4,7 +4,7 @@
     :name="menu.to"
   >
     <Icon v-if="menu.icon" :type="menu.icon" :style="{marginRight: '8px'}"/>
-    {{ menu.name }}
+    {{ generateTitle(menu.name) }}
   </MenuItem>
 
   <Submenu
@@ -13,7 +13,7 @@
   >
     <template slot="title">
       <Icon v-if="menu.icon" :type="menu.icon" :style="{marginRight: '8px'}"/>
-      {{ menu.name }}
+      {{ generateTitle(menu.name) }}
     </template>
     <recursion-menu-item
       v-for="(subMenu, subIndex) in menu.children"
@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import { generateTitle } from './i18'
+
 export default {
   name: 'recursionMenuItem',
   props: {
@@ -31,6 +33,10 @@ export default {
       type: Object,
       required: true
     }
+  },
+
+  methods: {
+    generateTitle
   }
 }
 </script>

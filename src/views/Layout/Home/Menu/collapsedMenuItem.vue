@@ -17,7 +17,7 @@
       <template v-else>
         <Icon :type="menu.icon" size="12"
           :style="{marginRight: '8px', marginLeft: '-10px'}"
-        />{{ menu.name }}
+        />{{ generateTitle(menu.name) }}
       </template>
 
       <Icon v-if="!noName" type="ios-arrow-forward" :style="{position: 'absolute', top: '10px', right: '4px'}"/>
@@ -39,7 +39,7 @@
             padding: '10px'
           }">
             <Icon v-if="subMenu.icon" :type="subMenu.icon" :style="{marginRight: '8px'}"
-            />{{ subMenu.name }}
+            />{{ generateTitle(subMenu.name) }}
           </div>
         </DropdownItem>
 
@@ -51,6 +51,8 @@
 </template>
 
 <script>
+import { generateTitle } from './i18'
+
 export default {
   name: 'collapsedMenuItem',
   props: {
@@ -67,7 +69,9 @@ export default {
   methods: {
     handleClick (to) {
       this.$emit('on-select', to)
-    }
+    },
+
+    generateTitle
   }
 }
 </script>

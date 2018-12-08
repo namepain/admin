@@ -27,7 +27,7 @@
           <Tooltip
           :key="index"
             v-if="!menu.children || !menu.children.length"
-            :content="menu.name"
+            :content="generateTitle(menu.name)"
             placement="right"
           >
             <Icon v-if="menu.icon" :type="menu.icon" size="30" @click="selectMenu(menu.to)" :style="{padding: '10px', cursor: 'pointer'}"/>
@@ -44,6 +44,7 @@
 import { mapGetters } from 'vuex'
 import recursionMenuItem from './recursionMenuItem'
 import collapsedMenuItem from './collapsedMenuItem'
+import { generateTitle } from './i18'
 
 export default {
   name: 'XMenu',
@@ -99,7 +100,10 @@ export default {
       return list.reduce((a, b) => {
         return a.concat(b.children && b.children.length ? [b].concat(this.flattenMenu(b.children)) : b)
       }, [])
-    }
+    },
+
+    // 国际化处理
+    generateTitle
   },
 
   components: {

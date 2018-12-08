@@ -8,6 +8,6 @@
     alignItems: 'center',
     fontSize: '44px'
   }">
-    遇音管理系统
+    后台管理系统
   </div>
 </template>

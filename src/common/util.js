@@ -36,6 +36,10 @@ export function flatten (arr) {
   return arr.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), [])
 }
 
+/**
+ * 根据秒格式化出 天，时，分，秒
+ * @param {Number} seconds
+ */
 export function parseSeconds (seconds) {
   let parser = [
     { desc: '天', unit: 24 * 60 * 60 },
@@ -54,4 +58,18 @@ export function parseSeconds (seconds) {
     }
     return a
   }, '')
+}
+
+/**
+ * 获取 url 中的参数
+ * @param {String} url
+ */
+export function pasreQuery (url = '') {
+  let query = (url.split('?')[1] || '').split('&')
+  return query.reduce((a, b) => {
+    let pair = b.split('=')
+    let value = decodeURIComponent(pair[1])
+    a[pair[0]] = value
+    return a
+  }, {})
 }

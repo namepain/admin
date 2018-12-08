@@ -1,24 +1,28 @@
 <template>
   <div class="login">
     <div class="login-wrapper">
-      <div class="login-header">遇 音</div>
-      <!-- <div class="subtitle">一个admin的subtitle</div> -->
+      <div class="login-header">{{ $t('login.logIn') }}</div>
+      <div class="subtitle">一个admin的subtitle</div>
       <Form ref="loginForm" :model="formItem" :rules="rules" class="login-form">
         <FormItem class="login-form-item" prop="username">
-          <Input type="text" placeholder="用户名" v-model.trim="formItem.username"></Input>
+          <Input type="text" :placeholder="$t('login.username')" v-model.trim="formItem.username"></Input>
         </FormItem>
         <FormItem class="login-form-item" prop="password">
-          <Input type="password" placeholder="密 码" v-model="formItem.password" @keyup.enter.native="login"></Input>
+          <Input type="password" :placeholder="$t('login.password')" v-model="formItem.password" @keyup.enter.native="login"></Input>
         </FormItem>
         <FormItem class="login-form-item">
           <Button @click="login" long type="primary">登 入</Button>
         </FormItem>
       </Form>
+
+      <Lang color="#888" :style="{position: 'absolute', right: '0px', top: '10px'}"/>
     </div>
   </div>
 </template>
 
 <script>
+import Lang from '@/components/Lang'
+
 export default {
   name: 'Login',
   data () {
@@ -50,6 +54,10 @@ export default {
         }
       })
     }
+  },
+
+  components: {
+    Lang
   }
 }
 </script>
@@ -62,11 +70,12 @@ export default {
   text-align: center;
 
   .login-wrapper {
+    position: relative;
     width: 320px;
     margin: 0 auto;
 
     .login-header {
-      margin-bottom: 20px;
+      // margin-bottom: 20px;
       font-weight: 300;
       font-size: 30px;
       color: #000;

@@ -19,12 +19,12 @@
       </Sider>
       <Layout :style="{marginLeft: collapsed ? '64px' : '200px', padding: '0 24px', transition: '.2s'}">
           <Breadcrumb :style="{margin: '24px 0'}">
-            <BreadcrumbItem v-for="(bread, index) in breadList" :key="index" :to="{name: bread}">{{ bread }}</BreadcrumbItem>
+            <BreadcrumbItem v-for="(bread, index) in breadList" :key="index" :to="{name: bread}">{{ generateTitle(bread) }}</BreadcrumbItem>
           </Breadcrumb>
           <Content :style="{position: 'relative', background: '#fff'}">
             <router-view />
           </Content>
-          <Footer style="text-align: center; background: transparent;">2013-2018 &copy; 遇音科技</Footer>
+          <Footer style="text-align: center; background: transparent;">{{ footer }}</Footer>
       </Layout>
     </Layout>
   </Layout>
@@ -35,12 +35,14 @@ import { mapGetters } from 'vuex'
 import XHeader from '@/views/Layout/Home/Header'
 import XMenu from '@/views/Layout/Home/Menu'
 import menuList from '@/config/menu'
+import page from '@/config/index'
 
 export default {
   name: 'Home',
   data () {
     return {
-      menuList
+      menuList,
+      footer: page.footer
     }
   },
 
@@ -49,13 +51,43 @@ export default {
       'collapsed'
     ]),
     breadList () {
-      return this.$route.matched.map(v => v.name)
+      let list = this.$route.matched.reduce((a, { name, meta }) => {
+        let bread = meta && meta.bread
+
+        // 如果是一个数组 用来补全前面的 路径
+        if (Array.isArray(bread)) {
+          a = a.concat(bread)
+        }
+
+        // 没有 meta 或 没有设置 bread 为 false 时显示面包屑
+        if (!meta || bread !== false) {
+          a.push(name)
+        }
+        return a
+      }, [])
+
+      return list[0] === 'Home' ? list : ['Home'].concat(list)
     }
   },
 
   methods: {
+
+    // 选择菜单
     selectMenu (name) {
       this.$router.push({ name })
+    },
+
+    // 面包屑 的国际化处理
+    generateTitle (title) {
+      const hasKey = this.$te('bread.' + title)
+
+      if (hasKey) {
+        // $t :this method from vue-i18n, inject in @/lang/index.js
+        const translatedTitle = this.$t('bread.' + title)
+
+        return translatedTitle
+      }
+      return title
     }
   },
 
