@@ -15,6 +15,7 @@ module.exports = appInfo => {
     host: '127.0.0.1',
     port: 3306,
     database: 'rbac_dev',
+    timezone: '+08:00', // 东八时区
   };
 
   // csrf

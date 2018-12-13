@@ -8,6 +8,15 @@ class UserService extends Service {
       offset,
       limit,
       order: [[ 'created_at', 'desc' ], [ 'id', 'desc' ]],
+
+      include: [{
+        model: this.ctx.model.Role,
+        attributes: [ 'name' ], // role 表的字段
+        through: {
+          attributes: [ ], // user_role 表的字段
+          model: this.ctx.model.userRole,
+        },
+      }],
     });
   }
 

@@ -8,6 +8,13 @@ class RoleService extends Service {
       offset,
       limit,
       order: [[ 'created_at', 'desc' ], [ 'id', 'desc' ]],
+      include: [{
+        model: this.ctx.model.User,
+        // through: {
+        //   model: this.ctx.model.userRole,
+        //   attributes: [ 'name' ],
+        // },
+      }],
     });
   }
 

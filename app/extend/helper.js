@@ -4,7 +4,7 @@ module.exports = {
   parseInt(str) {
     if (typeof str === 'number') return str;
     if (!str) return 0;
-    return parseInt(str) || 0;
+    return parseInt(str);
   },
 
   parseOffset(num, size) {

@@ -5,45 +5,44 @@ const { app, assert } = require('egg-mock/bootstrap');
 describe('test/app/controller/roles.test.js', () => {
 
   describe('GET /roles', () => {
-    it('should get two rows and count three', async () => {
+    beforeEach(async () => {
       await app.factory.createMany('role', 3);
+    });
+    it('should get two rows and count three', async () => {
       const res = await app.httpRequest().get('/roles?pageNum=1&pageSize=2');
       assert(res.status === 200);
-      assert(res.body.count === 3);
-      assert(res.body.rows.length === 2);
-      assert(res.body.rows[0].name);
-      assert(res.body.rows[0].desc);
-      assert(res.body.rows[0].remark);
+      assert(res.body.data.count === 3);
+      assert(res.body.data.rows.length === 2);
+      assert(res.body.data.rows[0].name);
+      assert(res.body.data.rows[0].desc);
+      assert(res.body.data.rows[0].remark);
     });
     it('should get two rows and count three', async () => {
-      await app.factory.createMany('role', 3);
       const res = await app.httpRequest().get('/roles?pageSize=2');
       assert(res.status === 200);
-      assert(res.body.count === 3);
-      assert(res.body.rows.length === 2);
-      assert(res.body.rows[0].name);
-      assert(res.body.rows[0].desc);
-      assert(res.body.rows[0].remark);
+      assert(res.body.data.count === 3);
+      assert(res.body.data.rows.length === 2);
+      assert(res.body.data.rows[0].name);
+      assert(res.body.data.rows[0].desc);
+      assert(res.body.data.rows[0].remark);
     });
     it('should get three rows and count three', async () => {
-      await app.factory.createMany('role', 3);
       const res = await app.httpRequest().get('/roles?pageNum=1');
       assert(res.status === 200);
-      assert(res.body.count === 3);
-      assert(res.body.rows.length === 3);
-      assert(res.body.rows[0].name);
-      assert(res.body.rows[0].desc);
-      assert(res.body.rows[0].remark);
+      assert(res.body.data.count === 3);
+      assert(res.body.data.rows.length === 3);
+      assert(res.body.data.rows[0].name);
+      assert(res.body.data.rows[0].desc);
+      assert(res.body.data.rows[0].remark);
     });
     it('should get three rows and count three', async () => {
-      await app.factory.createMany('role', 3);
       const res = await app.httpRequest().get('/roles');
       assert(res.status === 200);
-      assert(res.body.count === 3);
-      assert(res.body.rows.length === 3);
-      assert(res.body.rows[0].name);
-      assert(res.body.rows[0].desc);
-      assert(res.body.rows[0].remark);
+      assert(res.body.data.count === 3);
+      assert(res.body.data.rows.length === 3);
+      assert(res.body.data.rows[0].name);
+      assert(res.body.data.rows[0].desc);
+      assert(res.body.data.rows[0].remark);
     });
   });
 
@@ -52,9 +51,9 @@ describe('test/app/controller/roles.test.js', () => {
       const role = await app.factory.create('role');
       const res = await app.httpRequest().get(`/roles/${role.id}`);
       assert(res.status === 200);
-      assert(res.body.name === role.name);
-      assert(res.body.desc === role.desc);
-      assert(res.body.remark === role.remark);
+      assert(res.body.data.name === role.name);
+      assert(res.body.data.desc === role.desc);
+      assert(res.body.data.remark === role.remark);
     });
   });
 
@@ -67,11 +66,11 @@ describe('test/app/controller/roles.test.js', () => {
           remark: 'remark',
         });
       assert(res.status === 201);
-      assert(res.body.id);
+      assert(res.body.data.id);
 
-      res = await app.httpRequest().get(`/roles/${res.body.id}`);
+      res = await app.httpRequest().get(`/roles/${res.body.data.id}`);
       assert(res.status === 200);
-      assert(res.body.name === 'name');
+      assert(res.body.data.name === 'name');
     });
   });
 
@@ -85,9 +84,9 @@ describe('test/app/controller/roles.test.js', () => {
           remark: role.remark + '_remark',
         });
       assert(res.status === 200);
-      assert(res.body.name === role.name + '_name');
-      assert(res.body.desc === role.desc + '_desc');
-      assert(res.body.remark === role.remark + '_remark');
+      assert(res.body.data.name === role.name + '_name');
+      assert(res.body.data.desc === role.desc + '_desc');
+      assert(res.body.data.remark === role.remark + '_remark');
     });
   });
 
