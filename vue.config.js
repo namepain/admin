@@ -1,16 +1,16 @@
 module.exports = {
 
   devServer: {
-    // proxy: {
+    proxy: {
 
-    //   '/': {
-    //     target: 'http://192.168.9.41:9078/',
-    //     ws: false,
-    //     changeOrigin: true,
-    //     pathRewrite: {}
-    //   }
+      'api/': {
+        target: 'http://127.0.0.1:7001/',
+        ws: false,
+        changeOrigin: true,
+        pathRewrite: { 'api/': '/' }
+      }
 
-    // }
+    }
   }
 
 }

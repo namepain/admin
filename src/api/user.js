@@ -106,12 +106,24 @@ export function addUserLabel (params) {
   })
 }
 
+/** *************************** 权限管理 ***************************/
 /**
- * GET /user/getUserList 获取系统用户列表
+ * GET /users/getUserList 获取系统用户列表
  */
 export function getUserList (params) {
   return request({
-    url: '/user/getUserList',
+    url: '/users',
+    method: 'get',
+    params
+  })
+}
+
+/**
+ * GET /users/getRoleList 获取系统用户列表
+ */
+export function getRoleList (params) {
+  return request({
+    url: '/roles',
     method: 'get',
     params
   })

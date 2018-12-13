@@ -19,7 +19,11 @@ export default [
   {
     name: 'User',
     icon: 'md-list',
-    to: 'UserList'
+    to: 'TheUser',
+    children: [
+      { name: 'UserList', icon: 'md-list', to: 'UserList' },
+      { name: 'Role', icon: 'md-list', to: 'RoleList' }
+    ]
   }
   // {
   //   name: '支付宝',

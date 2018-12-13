@@ -13,6 +13,23 @@ export default {
         list: genarateUserArray(+pageNum, +pageSize, +total)
       }
     }
+  },
+
+  getRoleList: () => {
+    return {
+      status: '1001',
+      tips: '获取角色列表成功！',
+      data: {
+        total: 5,
+        list: [
+          { id: 1, role: 'admin', name: '管理员', desc: '管理员，叫爸爸', remark: '' },
+          { id: 2, role: 'user', name: '用户', desc: '二逼青年', remark: '' },
+          { id: 3, role: 'cat', name: '猫', desc: 'mewo~', remark: '' },
+          { id: 4, role: 'dog', name: '狗', desc: 'bark!', remark: '' },
+          { id: 5, role: 'smartisian', name: '锤子', desc: '锤子哦', remark: '' }
+        ]
+      }
+    }
   }
 }
 

@@ -17,6 +17,7 @@ Mock.mock(/\/login\/login/, 'post', loginApi.login)
 Mock.mock(/\/login\/logout/, 'post', loginApi.logout)
 
 // 系统用户
-Mock.mock(/\/user\/getUserList/, 'get', userApi.getUserList)
+Mock.mock(/\/users\/getUserList/, 'get', userApi.getUserList)
+Mock.mock(/\/users\/getRoleList/, 'get', userApi.getRoleList)
 
 export default Mock

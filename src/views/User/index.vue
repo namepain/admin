@@ -23,17 +23,31 @@
         <Button type="primary" @click="saveUser">确定</Button>
       </div>
     </Modal>
+
+    <Modal v-model="role_modal" title="授予角色">
+      <Transfer
+        :data="roleList"
+        :target-keys="targetRoles"
+        :render-format="renderTransfer"
+        @on-change="transferChange"></Transfer>
+      <div slot="footer">
+        <Button @click="role_modal = false">取消</Button>
+        <Button type="primary" @click="saveUserRole">确定</Button>
+      </div>
+    </Modal>
   </Card>
 </template>
 
 <script>
 import { getUserList } from '@/api/user'
+import { formatDate } from '@/common/util'
 
 export default {
   name: 'UserList',
   data () {
     return {
       modal: false,
+      role_modal: false,
       loading: false,
       searchParam: {
         name: '',
@@ -45,11 +59,11 @@ export default {
 
       columns: [
         { title: 'ID', minWidth: 50, key: 'id' },
-        { title: '角色', minWidth: 120, key: 'role' },
         { title: '名称', minWidth: 120, key: 'name' },
-        { title: '密码', minWidth: 100, key: 'password' },
-        { title: '创建时间', minWidth: 100, key: 'createtime' },
-        { title: '状态', minWidth: 100, key: 'status' },
+        { title: '角色', minWidth: 120, key: 'role', render: (h, params) => h('span', params.row.roles.map(v => v.name).join(',')) },
+        // { title: '密码', minWidth: 100, key: 'password' },
+        { title: '创建时间', minWidth: 100, key: 'created_at', render: (h, params) => h('span', formatDate(params.row.created_at)) },
+        // { title: '状态', minWidth: 100, key: 'status' },
         {
           title: '操作',
           key: 'action',
@@ -58,12 +72,20 @@ export default {
           render: (h, { row }) => {
             return h('div', [
               h('Button', { props: { type: 'info', size: 'small' }, style: { marginRight: '5px' }, on: { click: () => this.edit(row) } }, '编辑'),
+              h('Button', { props: { type: 'success', size: 'small' }, style: { marginRight: '5px' }, on: { click: () => this.auth(row) } }, '授权'),
               h('Button', { props: { type: 'error', size: 'small' }, style: { marginRight: '5px' }, on: { click: () => this.dele(row) } }, '删除')
             ])
           }
         }
       ],
-      data: []
+      data: [],
+
+      roleList: [
+        { 'key': '1', 'label': 'Content 1', 'disabled': false },
+        { 'key': '2', 'label': 'Content 2', 'disabled': true },
+        { 'key': '3', 'label': 'Content 3', 'disabled': false }
+      ],
+      targetRoles: ['1', '2']
     }
   },
 
@@ -100,6 +122,27 @@ export default {
     // 删除系统用户
     dele () {
       // ...
+    },
+
+    // 授权给用户
+    auth (row) {
+      // ...
+      this.role_modal = true
+    },
+
+    // 保存用户角色
+    saveUserRole () {
+      // ...
+    },
+
+    // 穿梭框渲染函数
+    renderTransfer (item) {
+      return item.key + ':' + item.label
+    },
+
+    // 穿梭框改变
+    transferChange (newTargetKeys) {
+      this.targetRoles = newTargetKeys
     }
   }
 }

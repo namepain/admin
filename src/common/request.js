@@ -2,7 +2,7 @@ import Axios from 'axios'
 import { Message } from 'iview'
 
 const service = Axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? '/' : '/',
+  baseURL: process.env.NODE_ENV === 'development' ? 'api/' : '/',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json; charset=utf-8'
