@@ -11,38 +11,38 @@ describe('test/app/controller/roles.test.js', () => {
     it('should get two rows and count three', async () => {
       const res = await app.httpRequest().get('/roles?pageNum=1&pageSize=2');
       assert(res.status === 200);
-      assert(res.body.data.count === 3);
-      assert(res.body.data.rows.length === 2);
-      assert(res.body.data.rows[0].name);
-      assert(res.body.data.rows[0].desc);
-      assert(res.body.data.rows[0].remark);
+      assert(res.body.data.total === 3);
+      assert(res.body.data.list.length === 2);
+      assert(res.body.data.list[0].name);
+      assert(res.body.data.list[0].desc);
+      assert(res.body.data.list[0].remark);
     });
     it('should get two rows and count three', async () => {
       const res = await app.httpRequest().get('/roles?pageSize=2');
       assert(res.status === 200);
-      assert(res.body.data.count === 3);
-      assert(res.body.data.rows.length === 2);
-      assert(res.body.data.rows[0].name);
-      assert(res.body.data.rows[0].desc);
-      assert(res.body.data.rows[0].remark);
+      assert(res.body.data.total === 3);
+      assert(res.body.data.list.length === 2);
+      assert(res.body.data.list[0].name);
+      assert(res.body.data.list[0].desc);
+      assert(res.body.data.list[0].remark);
     });
     it('should get three rows and count three', async () => {
       const res = await app.httpRequest().get('/roles?pageNum=1');
       assert(res.status === 200);
-      assert(res.body.data.count === 3);
-      assert(res.body.data.rows.length === 3);
-      assert(res.body.data.rows[0].name);
-      assert(res.body.data.rows[0].desc);
-      assert(res.body.data.rows[0].remark);
+      assert(res.body.data.total === 3);
+      assert(res.body.data.list.length === 3);
+      assert(res.body.data.list[0].name);
+      assert(res.body.data.list[0].desc);
+      assert(res.body.data.list[0].remark);
     });
     it('should get three rows and count three', async () => {
       const res = await app.httpRequest().get('/roles');
       assert(res.status === 200);
-      assert(res.body.data.count === 3);
-      assert(res.body.data.rows.length === 3);
-      assert(res.body.data.rows[0].name);
-      assert(res.body.data.rows[0].desc);
-      assert(res.body.data.rows[0].remark);
+      assert(res.body.data.total === 3);
+      assert(res.body.data.list.length === 3);
+      assert(res.body.data.list[0].name);
+      assert(res.body.data.list[0].desc);
+      assert(res.body.data.list[0].remark);
     });
   });
 
