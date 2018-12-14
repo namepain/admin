@@ -17,6 +17,11 @@ export default [
         path: '/roleList',
         name: 'RoleList',
         component: () => import('@/views/User/RoleList')
+      },
+      {
+        path: '/roleResource',
+        name: 'RoleResource',
+        component: () => import('@/views/User/RoleResource')
       }
     ]
   }

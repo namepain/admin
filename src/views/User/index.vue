@@ -3,10 +3,16 @@
     <p slot="title">系统用户</p>
 
     <Row type="flex" justify="end" align="middle" class="mb10">
-      <Input v-model.trim="searchParam.name" placeholder="name" clearable class="w220 mr10"></Input>
-      <Input v-model.trim="searchParam.mobile" placeholder="mobile" clearable class="w220 mr10"></Input>
-
-      <Button type="primary" icon="ios-search" :loading="loading" @click="getList(1)">查询</Button>
+      <Col style="flex:1">
+        <Button type="success" icon="md-add" @click="modal = true" class="fl">新增用户</Button>
+      </Col>
+      <Col>
+        <Input v-model.trim="searchParam.name" placeholder="name" clearable class="w220 mr10"></Input>
+        <Input v-model.trim="searchParam.mobile" placeholder="mobile" clearable class="w220 mr10"></Input>
+      </Col>
+      <Col>
+        <Button type="primary" icon="ios-search" :loading="loading" @click="getList(1)">查询</Button>
+      </Col>
     </Row>
     <Table :columns="columns" :data="data" :loading="loading" size="small" class="mt20"></Table>
     <Row type="flex" justify="end" align="middle" class="mt10">
@@ -17,15 +23,32 @@
     </Row>
 
     <Modal v-model="modal" title="新增用户">
-      <!-- <Input v-model.trim="coin" placeholder=""></Input> -->
+      <Form :model="formItem" :rules="userRules" ref="form" :label-width="80">
+        <FormItem label="用户名" prop="name">
+          <Input v-model.trim="formItem.name" placeholder="请输入用户名" />
+        </FormItem>
+        <FormItem label="描述" prop="desc">
+          <Input v-model.trim="formItem.desc" placeholder="请输入描述" />
+        </FormItem>
+        <FormItem label="备注" prop="remark">
+          <Input v-model.trim="formItem.remark" placeholder="请输入备注" />
+        </FormItem>
+        <FormItem label="状态" prop="status">
+          <Select v-model="formItem.status" placeholder="请选择用户状态">
+            <Option :value="0">启用</Option>
+            <Option :value="1">不启用</Option>
+          </Select>
+        </FormItem>
+      </Form>
       <div slot="footer">
         <Button @click="modal = false">取消</Button>
-        <Button type="primary" @click="saveUser">确定</Button>
+        <Button type="primary" @click="saveOrUpdateUser">确定</Button>
       </div>
     </Modal>
 
     <Modal v-model="role_modal" title="授予角色">
       <Transfer
+        :titles="['所有角色', '已授权角色']"
         :data="roleList"
         :target-keys="targetRoles"
         :render-format="renderTransfer"
@@ -39,7 +62,7 @@
 </template>
 
 <script>
-import { getUserList } from '@/api/user'
+import { getUserList, getAllRoleList, saveUser, updateUser, deleteUser, setUserRoles } from '@/api/user'
 import { formatDate } from '@/common/util'
 
 export default {
@@ -60,7 +83,7 @@ export default {
       columns: [
         { title: 'ID', minWidth: 50, key: 'id' },
         { title: '名称', minWidth: 120, key: 'name' },
-        { title: '角色', minWidth: 120, key: 'role', render: (h, params) => h('span', params.row.roles.map(v => v.name).join(',')) },
+        { title: '所属角色', minWidth: 120, key: 'role', render: (h, params) => h('span', params.row.roles.map(v => v.name).join(',')) },
         // { title: '密码', minWidth: 100, key: 'password' },
         { title: '创建时间', minWidth: 100, key: 'created_at', render: (h, params) => h('span', formatDate(params.row.created_at)) },
         // { title: '状态', minWidth: 100, key: 'status' },
@@ -70,30 +93,57 @@ export default {
           width: 180,
           fixed: 'right',
           render: (h, { row }) => {
-            return h('div', [
+            return h('div', row.name === 'admin' ? '' : [
               h('Button', { props: { type: 'info', size: 'small' }, style: { marginRight: '5px' }, on: { click: () => this.edit(row) } }, '编辑'),
               h('Button', { props: { type: 'success', size: 'small' }, style: { marginRight: '5px' }, on: { click: () => this.auth(row) } }, '授权'),
-              h('Button', { props: { type: 'error', size: 'small' }, style: { marginRight: '5px' }, on: { click: () => this.dele(row) } }, '删除')
+              h(
+                'Poptip',
+                {
+                  props: { transfer: true, confirm: true, title: '你确定删除此用户？' },
+                  on: { 'on-ok': () => this.dele(row) }
+                },
+                [ h('Button', { props: { type: 'error', size: 'small' } }, '删除') ]
+              )
             ])
           }
         }
       ],
       data: [],
 
-      roleList: [
-        { 'key': '1', 'label': 'Content 1', 'disabled': false },
-        { 'key': '2', 'label': 'Content 2', 'disabled': true },
-        { 'key': '3', 'label': 'Content 3', 'disabled': false }
-      ],
-      targetRoles: ['1', '2']
+      formItem: {
+        name: '', // 用户名
+        desc: '', // 描述
+        remark: '', // 备注
+        status: 0 // 启用状态 0 正常启用，1 冻结
+      },
+      userRules: {
+        name: [{ required: true, trigger: 'blur', message: '用户名必填' }],
+        status: [{ required: true, type: 'number', trigger: 'change', message: '启用状态必选' }]
+      },
+
+      authUserId: '', // 当前授权的用户
+      roleList: [],
+      targetRoles: []
     }
   },
 
   created () {
     this.getList()
+    this.getRoleList()
   },
 
   methods: {
+
+    // 获取角色列表
+    getRoleList () {
+      getAllRoleList().then(data => {
+        this.roleList = data.map(v => {
+          // iview 穿梭框要求必须有 key
+          v.key = String(v.id)
+          return v
+        })
+      })
+    },
 
     // 获取列表
     getList (page) {
@@ -110,39 +160,74 @@ export default {
     },
 
     // 新增系统用户
-    saveUser () {
-      // ...
+    saveOrUpdateUser () {
+      this.$refs['form'].validate(valid => {
+        if (!valid) {
+          this.$Message.error('请检查表单填写')
+          return
+        }
+        if (!this.formItem.id) {
+          saveUser(this.formItem).then(data => {
+            this.getList()
+            this.modal = false
+            this.resetFormItem()
+          })
+        } else {
+          updateUser(this.formItem.id, this.formItem).then(data => {
+            this.getList()
+            this.modal = false
+            this.resetFormItem()
+          })
+        }
+      })
     },
 
     // 编辑系统用户
-    edit () {
-      // ...
+    edit (row) {
+      this.formItem.id = row.id
+      Object.keys(this.formItem).forEach(key => {
+        this.formItem[key] = row[key]
+      })
+
+      this.modal = true
     },
 
     // 删除系统用户
-    dele () {
-      // ...
+    dele ({ id }) {
+      deleteUser(id).then(data => this.getList())
     },
 
     // 授权给用户
     auth (row) {
-      // ...
+      this.authUserId = row.id
+      this.targetRoles = row.roles.map(v => String(v.id))
       this.role_modal = true
     },
 
     // 保存用户角色
     saveUserRole () {
-      // ...
+      setUserRoles(this.authUserId, this.targetRoles.map(v => Number(v))).then(data => {
+        this.role_modal = false
+        this.getList()
+      })
     },
 
     // 穿梭框渲染函数
     renderTransfer (item) {
-      return item.key + ':' + item.label
+      return item.name + ' - ' + item.desc
     },
 
     // 穿梭框改变
     transferChange (newTargetKeys) {
       this.targetRoles = newTargetKeys
+    },
+
+    // 重置 表单
+    resetFormItem () {
+      delete this.formItem.id
+      Object.keys(this.formItem).forEach(key => {
+        this.formItem[key] = ''
+      })
     }
   }
 }

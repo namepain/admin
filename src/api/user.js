@@ -107,6 +107,8 @@ export function addUserLabel (params) {
 }
 
 /** *************************** 权限管理 ***************************/
+
+/** ************* 用户管理 ******************/
 /**
  * GET /users/getUserList 获取系统用户列表
  */
@@ -119,12 +121,98 @@ export function getUserList (params) {
 }
 
 /**
- * GET /users/getRoleList 获取系统用户列表
+ * POST /users/ 保存用户
+ */
+export function saveUser (data) {
+  return request({
+    url: '/users',
+    method: 'post',
+    data
+  })
+}
+
+/**
+ * PUT /users/ 保存用户
+ */
+export function updateUser (id, data) {
+  return request({
+    url: `/users/${id}`,
+    method: 'put',
+    data
+  })
+}
+
+/**
+ * DELETE /users/ 保存用户
+ */
+export function deleteUser (id) {
+  return request({
+    url: `/users/${id}`,
+    method: 'delete'
+  })
+}
+
+/**
+ * POST /users/ 保存用户角色
+ */
+export function setUserRoles (userId, roleIds) {
+  return request({
+    url: `/users/setUserRoles`,
+    method: 'post',
+    data: { userId, roleIds }
+  })
+}
+
+/** ************* 角色管理 ******************/
+/**
+ * GET /roles/getRoleList 获取系统角色列表
  */
 export function getRoleList (params) {
   return request({
     url: '/roles',
     method: 'get',
     params
+  })
+}
+
+/**
+ * GET /roles/getRoleList 获取全部系统角色（无分页
+ */
+export function getAllRoleList () {
+  return request({
+    url: '/roles/getAllRoleList',
+    method: 'get'
+  })
+}
+
+/**
+ * POST /roles/ 保存角色
+ */
+export function saveRole (data) {
+  return request({
+    url: '/roles',
+    method: 'post',
+    data
+  })
+}
+
+/**
+ * PUT /roles/ 保存角色
+ */
+export function updateRole (id, data) {
+  return request({
+    url: `/roles/${id}`,
+    method: 'put',
+    data
+  })
+}
+
+/**
+ * DELETE /roles/ 保存角色
+ */
+export function deleteRole (id) {
+  return request({
+    url: `/roles/${id}`,
+    method: 'delete'
   })
 }
