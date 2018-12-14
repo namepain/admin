@@ -43,7 +43,14 @@ class RoleService extends Service {
     if (!role) {
       this.ctx.throw(404, 'role not found');
     }
+    if (role.name === 'admin') {
+      this.ctx.throw(422, 'can not delete admin');
+    }
     return await role.destroy();
+  }
+
+  async getAllRoles() {
+    return await this.ctx.model.Role.findAll();
   }
 }
 

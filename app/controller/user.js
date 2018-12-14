@@ -43,6 +43,13 @@ class UsersController extends Controller {
     ctx.success();
   }
 
+  async setUserRoles() {
+    const ctx = this.ctx;
+    const { userId, roleIds } = ctx.request.body;
+    await ctx.service.user.setUserRoles(userId, roleIds);
+    ctx.success();
+  }
+
 }
 
 module.exports = UsersController;

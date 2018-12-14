@@ -22,5 +22,10 @@ module.exports = app => {
     });
   };
 
+  Role.beforeBulkUpdate(role => {
+    role.attributes.updated_at = new Date();
+    return role;
+  });
+
   return Role;
 };

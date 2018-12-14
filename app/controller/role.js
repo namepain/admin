@@ -43,6 +43,12 @@ class RolesController extends Controller {
     ctx.success();
   }
 
+  async getAll() {
+    const ctx = this.ctx;
+    const allRoles = await ctx.service.role.getAllRoles();
+    ctx.success(allRoles);
+  }
+
 }
 
 module.exports = RolesController;

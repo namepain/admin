@@ -11,10 +11,10 @@ class UserService extends Service {
 
       include: [{
         model: this.ctx.model.Role,
-        attributes: [ 'name' ], // role 表的字段
+        attributes: [ 'id', 'name' ], // role 表的字段
         through: {
           attributes: [ ], // user_role 表的字段
-          model: this.ctx.model.userRole,
+          model: this.ctx.model.UserRole,
         },
       }],
     });
@@ -45,7 +45,20 @@ class UserService extends Service {
     if (!user) {
       this.ctx.throw(404, 'user not found');
     }
+    if (user.name === 'admin') {
+      this.ctx.throw(422, 'can not delete admin');
+    }
     return await user.destroy();
+  }
+
+  async setUserRoles(user_id, role_ids) {
+    const userRole = this.ctx.model.UserRole;
+    await userRole.destroy({
+      where: { user_id },
+    });
+    const records = role_ids.map(role_id => ({ role_id, user_id }));
+    console.log(role_ids, records);
+    await userRole.bulkCreate(records);
   }
 }
 

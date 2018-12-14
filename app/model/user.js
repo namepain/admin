@@ -9,7 +9,7 @@ module.exports = app => {
     desc: STRING(32),
     remark: STRING(64),
     status: INTEGER,
-    password: STRING(30),
+    password: { type: STRING(30), defaultValue: '666666' },
     created_at: DATE,
     updated_at: DATE,
   }, {
@@ -23,6 +23,11 @@ module.exports = app => {
       foreignKey: 'user_id',
     });
   };
+
+  User.beforeBulkUpdate(user => {
+    user.attributes.updated_at = new Date();
+    return user;
+  });
 
   return User;
 };
