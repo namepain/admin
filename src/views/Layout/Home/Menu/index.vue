@@ -118,7 +118,7 @@ export default {
   width: auto;
 
   > .ivu-tooltip, > .ivu-dropdown {
-    width: 64px;
+    width: 68px;
     text-align: center;
   }
 

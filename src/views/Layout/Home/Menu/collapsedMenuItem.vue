@@ -1,5 +1,5 @@
 <template>
-  <Dropdown placement="right" >
+  <Dropdown placement="right-start" >
     <div
       :style="{
         cursor: 'pointer',
