@@ -73,3 +73,42 @@ export function pasreQuery (url = '') {
     return a
   }, {})
 }
+
+/**
+ * 节流函数
+ * @param {function} fn
+ * @param {number} delay
+ */
+// export function throttle (fn, delay = 60) {
+//   let timestamp = 0
+//   return function (...args) {
+//     let now = +new Date()
+//     if (now - timestamp >= delay) {
+//       fn.apply(null, args)
+//       timestamp = now
+//     }
+//   }
+// }
+export function throttle (fn, delay = 60, { leading = false, trailing = true } = {}) {
+  let timestamp = 0
+  let timer
+  return function (...args) {
+    let now = +new Date() // 当前时间戳
+    if (!leading) timestamp = now
+    let remain = delay - (now - timestamp) // 本轮剩下时间
+    if (remain <= 0 || remain > delay) { // remain > delay 是考虑到用户改变系统时间，导致 now 小于了 timestamp
+      if (timer) {
+        clearTimeout(timer)
+        timer = null
+      }
+      fn.apply(this, args)
+      timestamp = now
+    } else if (!timer && trailing) {
+      timer = setTimeout(() => {
+        fn.apply(this, args)
+        timestamp = +new Date()
+        timer = null
+      }, remain)
+    }
+  }
+}
