@@ -112,3 +112,17 @@ export function throttle (fn, delay = 60, { leading = false, trailing = true } =
     }
   }
 }
+
+/**
+ * @param {Array} arr 扁平化一个对象数组
+ * @param {String} key 对象的 key 属性为子数组
+ */
+export function flattenObjKey (arr, key) {
+  return arr.reduce((a, b) => {
+    return a.concat(
+      Array.isArray(b[key])
+        ? [].concat(b).concat(flattenObjKey(b[key], key))
+        : b
+    )
+  }, [])
+}

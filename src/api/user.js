@@ -216,3 +216,32 @@ export function deleteRole (id) {
     method: 'delete'
   })
 }
+
+export function addResource (data) {
+  return request({
+    url: `/roles/addResource`,
+    method: 'post',
+    data: { data }
+  })
+}
+
+/**
+ * 根据角色Id获取角色资源
+ */
+export function getResourceByRoleId (roleId) {
+  return request({
+    url: `/roles/getResourcesByRole/${roleId}`,
+    method: 'get'
+  })
+}
+
+/**
+ * 根据角色Id存储角色资源
+ */
+export function saveRoleResource (roleId, data) {
+  return request({
+    url: `/roles/saveRoleResource/${roleId}`,
+    method: 'post',
+    data: { data }
+  })
+}

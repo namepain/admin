@@ -48,10 +48,12 @@
 
     <Modal v-model="role_modal" title="授予角色">
       <Transfer
+        filterable
         :titles="['所有角色', '已授权角色']"
         :data="roleList"
         :target-keys="targetRoles"
         :render-format="renderTransfer"
+        :list-style="{minWidth: '212px', minHeight: '340px'}"
         @on-change="transferChange"></Transfer>
       <div slot="footer">
         <Button @click="role_modal = false">取消</Button>
@@ -228,6 +230,7 @@ export default {
       Object.keys(this.formItem).forEach(key => {
         this.formItem[key] = ''
       })
+      this.formItem.status = 0
     }
   }
 }
