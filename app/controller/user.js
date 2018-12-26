@@ -50,6 +50,13 @@ class UsersController extends Controller {
     ctx.success();
   }
 
+  async getResourcesByUser() {
+    const ctx = this.ctx;
+    const userId = ctx.params.id;
+    const res = await ctx.service.user.getResourcesByUser(userId);
+    ctx.success(res);
+  }
+
 }
 
 module.exports = UsersController;

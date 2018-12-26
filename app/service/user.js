@@ -60,6 +60,39 @@ class UserService extends Service {
     console.log(role_ids, records);
     await userRole.bulkCreate(records);
   }
+
+  async getResourcesByUser(userId) {
+    const userRoles = await this.ctx.model.User.find({
+      where: { id: userId },
+      include: [{
+        require: true,
+        model: this.ctx.model.Role,
+        attributes: [ 'id' ],
+        through: {
+          attributes: [],
+          model: this.ctx.model.UserRole,
+        },
+      }],
+    });
+    if (!userRoles) {
+      return [];
+    }
+    const roleIds = userRoles.roles.map(v => v.id);
+    console.log(roleIds);
+
+    return await this.ctx.model.Resource.findAll({
+      include: [{
+        require: true,
+        attributes: [],
+        model: this.ctx.model.Role,
+        where: { id: { in: roleIds } },
+        through: {
+          attributes: [],
+          model: this.ctx.model.RoleResource,
+        },
+      }],
+    });
+  }
 }
 
 module.exports = UserService;

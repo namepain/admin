@@ -49,6 +49,28 @@ class RolesController extends Controller {
     ctx.success(allRoles);
   }
 
+  async addResource() {
+    const ctx = this.ctx;
+    const { data } = ctx.request.body;
+    const res = await ctx.service.resource.addResource(data);
+    ctx.success(res);
+  }
+
+  async getResourcesByRole() {
+    const ctx = this.ctx;
+    const roleId = ctx.params.id;
+    const res = await ctx.service.resource.getResourcesByRoleId(roleId);
+    ctx.success(res.map(v => v.name));
+  }
+
+  async saveRoleResource() {
+    const ctx = this.ctx;
+    const roleId = ctx.params.id;
+    const { data } = ctx.request.body;
+    const res = await ctx.service.resource.saveRoleResource(roleId, data);
+    ctx.success(res);
+  }
+
 }
 
 module.exports = RolesController;
