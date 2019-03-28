@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d217e10"],{c937:function(t,e,n){"use strict";n.r(e);var s=function(){var t=this,e=t.$createElement,n=t._self._c||e;return n("div",{staticClass:"dashboard",style:{position:"absolute",width:"100%",height:"100%",display:"flex",justifyContent:"center",alignItems:"center",fontSize:"44px"}},[t._v("\n  后台管理系统\n")])},i=[],l=n("2877"),a={},c=Object(l["a"])(a,s,i,!1,null,null,null);e["default"]=c.exports}}]);
+//# sourceMappingURL=chunk-2d217e10.b55dc355.js.map
