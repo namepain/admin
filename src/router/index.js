@@ -5,7 +5,6 @@ import store from '@/store'
 import iView from 'iview'
 
 import Login from '@/views/Layout/Login'
-import member from './modules/member'
 import user from './modules/user'
 
 Vue.use(Router)
@@ -34,37 +33,9 @@ const router = new Router({
           meta: { bread: false },
           component: () => import('@/views/Dashboard')
         }
-
-        // {
-        //   path: '/shareSignInList',
-        //   name: 'ShareSignInList',
-        //   component: () => import('@/views/ShareSignInList'),
-        //   children: [
-        //     {
-        //       path: '/nest1',
-        //       name: 'nest1',
-        //       component: () => import('@/views/nest/nest1'),
-        //       children: [
-        //         {
-        //           path: '/nest2',
-        //           name: 'nest2',
-        //           component: () => import('@/views/nest/nest2'),
-        //           children: [
-        //             {
-        //               path: '/nest3',
-        //               name: 'nest3',
-        //               component: () => import('@/views/nest/nest3')
-        //             }
-        //           ]
-        //         }
-        //       ]
-        //     }
-        //   ]
-        // }
       ]
     },
 
-    ...member,
     ...user
 
     // {

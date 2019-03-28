@@ -130,8 +130,8 @@ export default {
   },
 
   created () {
-    this.getList()
-    this.getRoleList()
+    // this.getList()
+    // this.getRoleList()
   },
 
   methods: {

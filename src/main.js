@@ -9,11 +9,20 @@ import i18n from './lang'
 import 'iview/dist/styles/iview.css'
 import './common/global.less'
 
+import directives from './common/directives'
+import * as filters from './common/filters'
+
 import App from './App.vue'
 
+// 开发时 mock 数据
 if (process.env.NODE_ENV === 'development') {
-  require('./mock')
+  // require('./mock')
 }
+
+// 注册全局指令
+Object.keys(directives).forEach(key => Vue.directive(key, directives[key]))
+// 注册全局 filter
+Object.keys(filters).forEach(key => Vue.filter(key, filters[key]))
 
 Vue.config.productionTip = false
 

@@ -4,10 +4,9 @@
  * @param {String} fmt
  */
 export function formatDate (date, fmt = 'yyyy-MM-dd hh:mm:ss') {
-  if (!date || String(date) === 'Invalid Date') return ''
-  if (!(date instanceof Date)) {
-    date = new Date(date)
-    if (date.toString() === 'Invalid Date') return ''
+  date = new Date(date)
+  if (date.toString() === 'Invalid Date') {
+    return ''
   }
   if (/(y+)/.test(fmt)) {
     fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
@@ -75,6 +74,43 @@ export function pasreQuery (url = '') {
 }
 
 /**
+ * 防抖函数
+ * @param {Function} func
+ * @param {number} wait
+ * @param {boolean} immediate
+ */
+export function debounce (func, wait, immediate) {
+  var timeout, result
+
+  var debounced = function () {
+    var context = this
+    var args = arguments
+
+    if (timeout) clearTimeout(timeout)
+    if (immediate) {
+      // 如果已经执行过，不再执行
+      var callNow = !timeout
+      timeout = setTimeout(function () {
+        timeout = null
+      }, wait)
+      if (callNow) result = func.apply(context, args)
+    } else {
+      timeout = setTimeout(function () {
+        func.apply(context, args)
+      }, wait)
+    }
+    return result
+  }
+
+  debounced.cancel = function () {
+    clearTimeout(timeout)
+    timeout = null
+  }
+
+  return debounced
+}
+
+/**
  * 节流函数
  * @param {function} fn
  * @param {number} delay
@@ -125,4 +161,111 @@ export function flattenObjKey (arr, key) {
         : b
     )
   }, [])
+}
+
+/**
+ * 挑出对象中有用的属性
+ * @param {Object} obj
+ */
+export function _pickUseful (obj) {
+  return Object.keys(obj).reduce((prev, curr) => {
+    let value = obj[curr]
+    if (value !== null && value !== undefined && value !== '') {
+      prev[curr] = value
+    }
+    return prev
+  }, {})
+}
+
+/**
+ * 得到本月第一天是星期几
+ * @param {Date} date
+ */
+export const getFirstDayOfMonth = function (date) {
+  const temp = new Date(date.getTime())
+  temp.setDate(1)
+  return temp.getDay()
+}
+
+/**
+ * 根据年,月索引得到该月天数
+ * @param {number} year
+ * @param {number} month
+ */
+export const getDayCountOfMonth = function (year, month) {
+  return new Date(year, month + 1, 0).getDate()
+}
+
+/**
+ * 判断对象类型
+ * @param {Object} obj
+ */
+export const typeOf = function (obj) {
+  const toString = Object.prototype.toString
+  const map = {
+    '[object Boolean]': 'boolean',
+    '[object Number]': 'number',
+    '[object String]': 'string',
+    '[object Function]': 'function',
+    '[object Array]': 'array',
+    '[object Date]': 'date',
+    '[object RegExp]': 'regExp',
+    '[object Undefined]': 'undefined',
+    '[object Null]': 'null',
+    '[object Object]': 'object'
+  }
+  return map[toString.call(obj)]
+}
+
+/**
+ * 深克隆
+ * @param {Object} data
+ */
+export const deepCopy = function (data) {
+  const t = typeOf(data)
+  let o
+
+  if (t === 'array') {
+    o = []
+  } else if (t === 'object') {
+    o = {}
+  } else {
+    return data
+  }
+
+  if (t === 'array') {
+    for (let i = 0; i < data.length; i++) {
+      o.push(deepCopy(data[i]))
+    }
+  } else if (t === 'object') {
+    for (let i in data) {
+      o[i] = deepCopy(data[i])
+    }
+  }
+  return o
+}
+
+/**
+ * 格式化千分位
+ * @param {number, Stirng} str
+ */
+export const formatThousandth = (str, delimiter) => {
+  var arr = String(str).split('.')
+  arr[0] = arr[0].replace(/(\B)(?=(\d{3})+$)/g, delimiter || ',')
+  return arr.join('.')
+}
+
+/**
+ * iview 表单属性深度校验 creator
+ * @param  {...any} props
+ */
+export const createValid = function (...props) {
+  return (value, rule, callback) => {
+    let valid = props.every((prop) => !!prop.split('.').reduce((prev, next) => prev[next], this))
+    if (!valid) {
+      callback(new Error())
+    } else {
+      callback()
+    }
+  }
 }

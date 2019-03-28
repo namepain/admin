@@ -6,13 +6,18 @@ import request from '@/common/request'
  * @param {String} password
  */
 export function Login (username, password) {
-  return request({
-    url: '/login/login',
-    method: 'post',
-    params: {
-      username,
-      password
-    }
+  // return request({
+  //   url: '/login/login',
+  //   method: 'post',
+  //   params: {
+  //     username,
+  //     password
+  //   }
+  // })
+  return Promise.resolve({
+    name: 'admin',
+    token: 'admin',
+    avatar: 'https://avatars1.githubusercontent.com/u/19219970?s=80&v=4'
   })
 }
 
