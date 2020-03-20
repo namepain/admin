@@ -1,5 +1,5 @@
 import Axios from 'axios'
-import { Message } from 'iview'
+import { Message } from 'view-design'
 
 const service = Axios.create({
   baseURL: process.env.NODE_ENV === 'development' ? 'api/' : '/',

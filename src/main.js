@@ -4,9 +4,9 @@ import store from './store'
 
 import 'normalize.css'
 
-import iView from 'iview'
+import iView from 'view-design'
 import i18n from './lang'
-import 'iview/dist/styles/iview.css'
+import 'view-design/dist/styles/iview.css'
 import './common/global.less'
 
 import directives from './common/directives'

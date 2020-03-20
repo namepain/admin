@@ -8,13 +8,13 @@ export default {
     'Home': '首 页',
     'User': '用户管理',
     'UserList': '系统用户列表',
-    'Role': '用户列表'
+    'Role': '角色列表'
   },
   bread: {
     'Home': '首 页',
     'TheUser': '用户管理',
     'UserList': '系统用户列表',
     'Dashboard': '主面板',
-    'RoleList': '用户列表'
+    'RoleList': '角色列表'
   }
 }

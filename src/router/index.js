@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import store from '@/store'
-import iView from 'iview'
+import iView from 'view-design'
 
 import Login from '@/views/Layout/Login'
 import user from './modules/user'
